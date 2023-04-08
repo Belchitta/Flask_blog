@@ -4,10 +4,10 @@ from werkzeug.security import generate_password_hash
 from blog.extensions import db
 
 
-@click.command("init-db")
-def init_db():
-    db.create_all()
-    print("Done!")
+# @click.command("init-db")
+# def init_db():
+#     db.create_all()
+#     print("Done!")
 
 
 @click.command('create-init-user')
@@ -15,11 +15,11 @@ def create_init_user():
     from blog.models.user import User
     from wsgi import app
 
-    # with app.app_context():
-    #     db.session.add(
-    #         User(email='name@example.com'
-    #     )
-    #     db.session.commit()
+    with app.app_context():
+        db.session.add(
+            User(email='name@example.com', password=generate_password_hash('test123'))
+        )
+        db.session.commit()
 
 
 @click.command("create-users")
