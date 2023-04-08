@@ -1,12 +1,18 @@
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, Boolean
-from blog.models.database import db
+from blog.extensions import db
 
 
 class User(db.Model, UserMixin):
-    id = Column(Integer, primary_key=True)
-    username = Column(String(80), unique=True, nullable=False)
-    is_staff = Column(Boolean, nullable=False, default=False)
+    __tablename__ = 'users'
 
-    def __repr__(self):
-        return f"User #{self.id} {self.username!r}>"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255))
+    is_staff = db.Column(db.Boolean, nullable=False, default=False)
+    email = db.Column(db.String(255), nullable=False, default="", server_default="")
+    # password = db.Column(db.String(255))
+
+    def __init__(self, email, username, is_staff):
+        self.email = email
+        self.username = username
+        self.is_staff = is_staff
+        # self.password = password
