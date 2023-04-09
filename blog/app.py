@@ -26,7 +26,6 @@ def register_extensions(app):
     login_manager.login_view = "auth_app.login"
     login_manager.init_app(app)
 
-
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.filter_by(id=user_id).one_or_none()
@@ -44,6 +43,3 @@ def register_commands(app: Flask):
     app.cli.add_command(commands.create_init_user)
     app.cli.add_command(commands.create_users)
     app.cli.add_command(commands.create_articles)
-
-
-
