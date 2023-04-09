@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, current_app
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import NotFound
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from blog.extensions import login_manager, db
 from blog.models.user import User
@@ -25,9 +24,11 @@ def login():
 
     if request.method == "POST" and form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).one_or_none()
+        password = request.form.get('password')
         if user is None:
             return render_template("auth/login.html", form=form, error="username doesn't exist")
-        if not user.validate_password(form.password.data):
+        if not not check_password_hash(user.password, password):
+        # if not user.validate_password(form.password.data):
             return render_template("auth/login.html", form=form, error="invalid username or password")
 
         login_user(user)
