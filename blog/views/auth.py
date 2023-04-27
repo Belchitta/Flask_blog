@@ -1,11 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.exceptions import NotFound
-from werkzeug.security import generate_password_hash, check_password_hash
 
-from blog.extensions import login_manager, db
-from blog.models.user import User
-from blog.forms.user import UserRegisterForm, LoginForm
+from flask import Blueprint, render_template, request, redirect, url_for
+from flask_login import login_user, logout_user, login_required
+from blog.extensions import login_manager
+from blog.models import User
 
 auth_app = Blueprint("auth_app", __name__)
 
@@ -44,15 +41,15 @@ def login_as():
         raise NotFound
 
     if request.method == "GET":
-        return render_template("auth/login_as.html")
+        return render_template("auth/login.html")
 
     username = request.form.get("username")
     if not username:
-        return render_template("auth/login_as.html", error="username not passed")
+        return render_template("auth/login.html", error="username not passed")
 
     user = User.query.filter_by(username=username).one_or_none()
     if user is None:
-        return render_template("auth/login_as.html", error=f"no user {username!r} found")
+        return render_template("auth/login.html", error=f"no user {username!r} found")
 
     login_user(user)
     return redirect(url_for("index"))

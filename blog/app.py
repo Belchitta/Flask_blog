@@ -1,33 +1,29 @@
-from flask import Flask, render_template
-from blog.models.user import User
-from blog import commands
-from blog.extensions import db, login_manager, migrate, csrf
-from blog.views.auth import auth_app
-from blog.views.users import users_app
+import os
+
+from flask import Flask
+
+from blog.models import User
 from blog.views.articles import articles_app
+from blog.extensions import db, login_manager, migrate
 
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    app.config.from_object('blog.config')
+
+    cfg_name = os.environ.get("CONFIG_NAME") or "DevConfig"
+    app.config.from_object(f"blog.configs.{cfg_name}")
+
     register_extensions(app)
     register_blueprints(app)
-    register_commands(app)
-
     return app
 
 
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
-    csrf.init_app(app)
 
     login_manager.login_view = "auth_app.login"
     login_manager.init_app(app)
-
-    @app.route('/', endpoint="index")
-    def start():
-        return render_template("index.html")
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -35,6 +31,9 @@ def register_extensions(app):
 
 
 def register_blueprints(app: Flask):
+    from blog.views.auth import auth_app
+    from blog.views.users import users_app
+
     app.register_blueprint(users_app, url_prefix="/users")
     app.register_blueprint(articles_app, url_prefix="/articles")
     app.register_blueprint(auth_app, url_prefix="/auth")
