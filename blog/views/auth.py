@@ -12,13 +12,13 @@ auth_app = Blueprint("auth_app", __name__)
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    return redirect(url_for("auth_app.login"))
+    return render_template('index.html')
 
 
-@auth_app.route("/login/", methods=["GET", "POST"], endpoint="login")
+@auth_app.route("/login", methods=["GET", "POST"], endpoint="login")
 def login():
     if current_user.is_authenticated:
-        return redirect("index")
+        return render_template('index.html')
 
     form = LoginForm(request.form)
 
@@ -28,11 +28,10 @@ def login():
         if user is None:
             return render_template("auth/login.html", form=form, error="username doesn't exist")
         if not not check_password_hash(user.password, password):
-        # if not user.validate_password(form.password.data):
             return render_template("auth/login.html", form=form, error="invalid username or password")
 
         login_user(user)
-        return redirect(url_for("index"))
+        return render_template('index.html')
 
     return render_template("auth/login.html", form=form)
 
@@ -55,13 +54,13 @@ def login_as():
         return render_template("auth/login_as.html", error=f"no user {username!r} found")
 
     login_user(user)
-    return redirect(url_for("index"))
+    return render_template('index.html')
 
 
 @auth_app.route("/register/", methods=["GET", "POST"], endpoint="register")
 def register():
     if current_user.is_authenticated:
-        return redirect("index")
+        return redirect(url_for("index"))
 
     form = UserRegisterForm(request.form)
     errors = []
@@ -89,11 +88,11 @@ def register():
     return render_template('auth/register.html', form=form, errors=errors,)
 
 
-@auth_app.route("/logout/", endpoint="logout")
+@auth_app.route("/logout/")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    return render_template('index.html')
 
 
 @auth_app.route("/secret/")
