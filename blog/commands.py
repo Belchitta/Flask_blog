@@ -1,12 +1,13 @@
 import click
+from werkzeug.security import generate_password_hash
 
 from blog.extensions import db
 
 
-@click.command("init-db")
-def init_db():
-    db.create_all()
-    print("Done!")
+# @click.command("init-db")
+# def init_db():
+#     db.create_all()
+#     print("Done!")
 
 
 @click.command('create-init-user')
