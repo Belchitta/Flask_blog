@@ -21,3 +21,9 @@ def register_blueprints(app: Flask):
     app.register_blueprint(users_app, url_prefix="/users")
     app.register_blueprint(articles_app, url_prefix="/articles")
     app.register_blueprint(auth_app, url_prefix="/auth")
+app = Flask(__name__)
+
+
+@app.route("/")
+def index():
+    return "Hello web!"
