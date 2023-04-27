@@ -1,7 +1,6 @@
-from blog.app import create_app, db
 from flask import render_template
-from blog.models import User
-from blog.models import Article
+from blog.app import create_app
+from blog.extensions import db
 
 app = create_app()
 
@@ -19,18 +18,24 @@ def init_db():
 
 @app.cli.command("create-users")
 def create_users():
-    admin = User(username="admin", is_staff=True)
-    sam = User(username="sam")
+    from blog.models import User
+    admin = User(username="Admin", is_staff=True)
+    sam = User(username="Sam")
+    jane = User(username="Jane")
+    john = User(username="John")
 
     db.session.add(admin)
     db.session.add(sam)
+    db.session.add(jane)
+    db.session.add(john)
     db.session.commit()
 
-    print("Done! Created users:", admin, sam)
+    print("Done! Created users:", admin, sam, jane, john)
 
 
 @app.cli.command("create-articles")
 def create_articles():
+    from blog.models import Article
     first = Article(
         title="The extinction of polar ferrets is a global problem.",
         text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eu dapibus leo. Proin non sem neque."
