@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
+from blog.extensions import db
 
 from blog.extensions import db
 

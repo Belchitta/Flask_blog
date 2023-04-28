@@ -1,16 +1,14 @@
-FROM python:3.9.1-buster
+FROM python:3.10-buster
 
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache --user -r requirements.txt
+RUN pip install python-dotenv
 
 COPY . .
 
 EXPOSE 5000
 
-COPY entrypoint.sh .
-RUN chmod u+x entrypoint.sh
-
-CMD ["sh", "entrypoint.sh"]
+CMD ["python3", "-m" , "flask", "run", "--host=0.0.0.0"]
