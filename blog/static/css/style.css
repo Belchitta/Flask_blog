@@ -1,10 +1,6 @@
 .parrent {
-  position: relative;
-}
-
-.parrent > img {
   position: absolute;
-  background: url(static/images/1618002999_34-p-oboi-zhiraf-36.jpg);
+  background: url("/images/1618002999_34-p-oboi-zhiraf-36.jpg") no-repeat, center;
   top: 0;
   left: 0;
   right: 0;
