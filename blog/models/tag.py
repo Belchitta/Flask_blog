@@ -17,3 +17,6 @@ class Tag(db.Model):
     name = db.Column(db.String(64), nullable=False)
 
     articles = relationship('Article', secondary=article_tag_associations_table, back_populates='tags')
+
+    def __str__(self):
+        return self.name
