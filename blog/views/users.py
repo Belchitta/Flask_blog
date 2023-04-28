@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 from werkzeug.exceptions import NotFound
-from blog.models import User
+from blog.models.user import User
+
 
 users_app = Blueprint("users_app", __name__)
 
@@ -12,7 +13,7 @@ def users_list():
     return render_template("users/list.html", users=users)
 
 
-@users_app.route("/<int:user_id>/", endpoint="details")
+@users_app.route('/<int:user_id>/', endpoint='details')
 @login_required
 def user_details(user_id: int):
     user = User.query.filter_by(id=user_id).one_or_none()
