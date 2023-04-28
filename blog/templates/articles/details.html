@@ -1,25 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Article #{{ article.id }}: {{ article.title }}
+    Article #{{ article_id }}
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-    <h1>{{ article.title }}</h1>
-    </div>
-    <div class="row">
-        <div class="col-md-12">{{ article.text }}</div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-        <div>Published {{ article.created_at.strftime('%d-%m-%Y %H:%M:%S') }}</div>
-        <div>by {{ article.author.user.username }}</div>
-    </div>
-        <div class="col-6">
-            {% for tag in article.tags %}
-                <span class="badge bg-primary"><a class="text-white" href="{{ url_for('articles_app.tag', tag_id=tag.id) }}">{{ tag.name }}</a></span>
-            {% endfor %}
-        </div>
+    <h2>{{ article_body['title'] }}</h2>
+    <p> {{ article_body['text'] }}</p>
+    <p>
+        <a href="{{ url_for('users_app.details', user_id=article_body['author']) }}">
+            Author: {{ users[article_body['author']]['name'] }}
+        </a>
+    </p>
+    <div>
+        <a href="{{ url_for('articles_app.list') }}">Back to articles list</a>
     </div>
 {% endblock %}

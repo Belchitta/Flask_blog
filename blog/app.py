@@ -2,6 +2,8 @@ from combojsonapi.event import EventPlugin
 from combojsonapi.permission import PermissionPlugin
 from combojsonapi.spec import ApiSpecPlugin
 from flask import Flask
+from blog.views.users import users_app
+from blog.views.articles import articles_app
 
 from blog.models.user import User
 from blog import commands
