@@ -1,9 +1,8 @@
 from combojsonapi.event import EventPlugin
 from combojsonapi.permission import PermissionPlugin
 from combojsonapi.spec import ApiSpecPlugin
-from flask import Flask
-from blog.views.users import users_app
-from blog.views.articles import articles_app
+from flask import Flask, Blueprint, render_template
+from flask_login import login_required
 
 from blog.models.user import User
 from blog import commands
@@ -53,6 +52,14 @@ def register_extensions(app):
         return User.query.filter_by(id=user_id).one_or_none()
 
 
+index_app = Blueprint("index_app", __name__)
+
+
+@index_app.route("/")
+def index():
+    return render_template('index.html')
+
+
 def register_api_routes():
     from blog.api.tag import TagList, TagDetail
     from blog.api.user import UserList, UserDetail
@@ -73,13 +80,11 @@ def register_api_routes():
 
 
 def register_blueprints(app: Flask):
-    from blog.views.auth import auth_app
-    from blog.views.users import users_app
-
     app.register_blueprint(users_app, url_prefix="/users")
     app.register_blueprint(articles_app, url_prefix="/articles")
     app.register_blueprint(auth_app, url_prefix="/auth")
     app.register_blueprint(authors_app, url_prefix='/authors')
+    app.register_blueprint(index_app)
 
 
 def register_commands(app: Flask):

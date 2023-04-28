@@ -17,11 +17,11 @@ articles_app = Blueprint("articles_app", __name__)
 @articles_app.route("/", endpoint="list", methods=['GET'])
 def articles_list():
     articles = Article.query.all()
-    count_articles = requests.get('http://127.0.0.1:5000/api/articles/event_get_count/').json()
+    # count_articles = requests.get('http://127.0.0.1:5000/api/articles/event_get_count/').json()
     return render_template(
         "articles/list.html",
         articles=articles,
-        count_articles=count_articles['count'],
+        # count_articles=count_articles['count'],
     )
 
 
