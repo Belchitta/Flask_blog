@@ -1,6 +1,5 @@
 # Flask_blog
 Project blog resource
-# Demo App for Lesson 5 GeekBrains
 
 ## Install 
 1. Create new virtual env

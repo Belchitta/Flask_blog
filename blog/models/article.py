@@ -16,3 +16,9 @@ class Article(db.Model):
 
     author = relationship('Author', back_populates='articles')
     tags = relationship('Tag', secondary=article_tag_associations_table, back_populates='articles')
+
+    def __repr__(self):
+        return f"Article #{self.id} {self.title!r} {self.dt_updated!r}>"
+
+    def __str__(self):
+        return self.title
